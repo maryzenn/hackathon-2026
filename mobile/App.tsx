@@ -15,6 +15,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import * as DocumentPicker from 'expo-document-picker';
 import * as Sharing from 'expo-sharing';
+import { SectionCard } from './components/SectionCard';
 import { API_BASE } from './config';
 
 type EraKey = '1950s' | '1960s' | '1970s' | 'original' | 'modern';
@@ -175,7 +176,7 @@ export default function App() {
         </Text>
         <Text className="mt-1 mb-4 text-center text-[11px] tracking-[1.5px] text-[#8b94a8]">ONE SLIDER · SEVENTY YEARS OF SOUND</Text>
 
-        <View className="mb-[14px] rounded-[14px] border border-[#262f45] bg-[#131826] p-4">
+        <SectionCard>
           <View className="flex-row items-center gap-2.5">
             <Pressable className="flex-row items-center gap-1.5 rounded-[10px] bg-[#4fd8eb] px-4 py-2.5" onPress={pickAndUpload} disabled={busy}>
               <MaterialCommunityIcons name="upload" size={18} color="#0b0e14" />
@@ -192,11 +193,11 @@ export default function App() {
           )}
           {!!trackName && <Text className="mt-3 font-semibold text-[#4fd8eb]">{trackName}</Text>}
           <Text className="mt-2 text-[11px] text-[#8b94a8]">Your own or royalty-free recordings only.</Text>
-        </View>
+        </SectionCard>
 
         {trackId && (
           <>
-            <View className="mb-[14px] rounded-[14px] border border-[#262f45] bg-[#131826] p-4">
+            <SectionCard>
               <View className="mb-2 flex-row justify-between">
                 {ERAS.map((e, i) => (
                   <Pressable key={e.key} className="flex-1 items-center py-1" onPress={() => setEraIndex(i)}>
@@ -227,9 +228,9 @@ export default function App() {
                     : `Rebuilding ${era.label} playback physics…`
                   : `${era.label} · ${era.sub}`}
               </Text>
-            </View>
+            </SectionCard>
 
-            <View className="mb-[14px] rounded-[14px] border border-[#262f45] bg-[#131826] p-4">
+            <SectionCard>
               <View className="flex-row items-center gap-2.5">
                 <Pressable
                   className="h-14 w-14 items-center justify-center rounded-full bg-[#4fd8eb]"
@@ -261,9 +262,9 @@ export default function App() {
                   </Pressable>
                 )}
               </View>
-            </View>
+            </SectionCard>
 
-            <View className="mb-[14px] rounded-[14px] border border-[#262f45] bg-[#131826] p-4">
+            <SectionCard>
               {analysis ? (
                 <>
                   <Text className="mb-2.5 text-[11px] tracking-[2px] text-[#8b94a8]">ANALYSIS</Text>
@@ -288,7 +289,7 @@ export default function App() {
                   )}
                 </Pressable>
               )}
-            </View>
+            </SectionCard>
           </>
         )}
 
