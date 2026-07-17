@@ -146,6 +146,21 @@ app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
 if __name__ == "__main__":
+    import argparse
     import uvicorn
 
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    parser = argparse.ArgumentParser(description="Run the Waveback API server.")
+    parser.add_argument(
+        "--host",
+        default="127.0.0.1",
+        help="Host address to bind to. Use 0.0.0.0 for LAN access.",
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=8000,
+        help="Port to run the server on.",
+    )
+    args = parser.parse_args()
+
+    uvicorn.run(app, host=args.host, port=args.port)
