@@ -12,13 +12,20 @@
     "expo-file-system": "~57.0.1",
     "expo-sharing": "~57.0.5",
     "expo-status-bar": "~57.0.1",
+    "nativewind": "^5.0.0-preview.4",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.0",
+    "react-native-css": "^3.0.7",
+    "react-native-reanimated": "^4.5.2",
+    "react-native-safe-area-context": "^5.8.0",
     "react-native-web": "^0.21.2"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
     "@types/react": "~19.2.2",
+    "postcss": "^8.5.19",
+    "tailwindcss": "^4.3.3",
     "typescript": "~6.0.3"
   },
   "scripts": {
@@ -27,5 +34,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web"
   },
-  "private": true
+  "private": true,
+  "overrides": {
+    "lightningcss": "1.30.1"
+  }
 }

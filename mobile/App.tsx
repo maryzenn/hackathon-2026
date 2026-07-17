@@ -6,10 +6,10 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
-  StyleSheet,
   Text,
   View,
 } from 'react-native';
+import './global.css';
 import Slider from '@react-native-community/slider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
@@ -166,43 +166,47 @@ export default function App() {
   const canShare = Platform.OS !== 'web';
 
   return (
-    <SafeAreaView style={s.safe}>
+    <SafeAreaView className="flex-1 bg-[#0b0e14]">
       <StatusBar barStyle="light-content" />
-      <ScrollView contentContainerStyle={s.scroll}>
-        <Text style={s.title}>
-          <Text style={s.titleWave}>WAVE</Text>
-          <Text style={s.titleBack}>BACK</Text>
+      <ScrollView contentContainerClassName="w-full max-w-[560px] self-center px-[18px] pb-12">
+        <Text className="mt-2 text-center text-[34px] font-extrabold tracking-[6px]">
+          <Text className="text-[#4fd8eb]">WAVE</Text>
+          <Text className="text-[#f5b453]">BACK</Text>
         </Text>
-        <Text style={s.tagline}>ONE SLIDER · SEVENTY YEARS OF SOUND</Text>
+        <Text className="mt-1 mb-4 text-center text-[11px] tracking-[1.5px] text-[#8b94a8]">ONE SLIDER · SEVENTY YEARS OF SOUND</Text>
 
-        <View style={s.card}>
-          <View style={s.row}>
-            <Pressable style={s.btn} onPress={pickAndUpload} disabled={busy}>
+        <View className="mb-[14px] rounded-[14px] border border-[#262f45] bg-[#131826] p-4">
+          <View className="flex-row items-center gap-2.5">
+            <Pressable className="flex-row items-center gap-1.5 rounded-[10px] bg-[#4fd8eb] px-4 py-2.5" onPress={pickAndUpload} disabled={busy}>
               <MaterialCommunityIcons name="upload" size={18} color="#0b0e14" />
-              <Text style={s.btnText}>Upload clip</Text>
+              <Text className="font-bold text-[#0b0e14]">Upload clip</Text>
             </Pressable>
-            <Pressable style={[s.btn, s.btnGhost]} onPress={loadDemo} disabled={busy}>
-              <Text style={s.btnGhostText}>Demo clip</Text>
+            <Pressable className="flex-row items-center gap-1.5 rounded-[10px] border border-[#4fd8eb] bg-transparent px-4 py-2.5" onPress={loadDemo} disabled={busy}>
+              <Text className="font-semibold text-[#4fd8eb]">Demo clip</Text>
             </Pressable>
           </View>
-          {busy && <ActivityIndicator style={{ marginTop: 12 }} color="#4fd8eb" />}
-          {!!trackName && <Text style={s.trackName}>{trackName}</Text>}
-          <Text style={s.hint}>Your own or royalty-free recordings only.</Text>
+          {busy && (
+            <View className="mt-3">
+              <ActivityIndicator color="#4fd8eb" />
+            </View>
+          )}
+          {!!trackName && <Text className="mt-3 font-semibold text-[#4fd8eb]">{trackName}</Text>}
+          <Text className="mt-2 text-[11px] text-[#8b94a8]">Your own or royalty-free recordings only.</Text>
         </View>
 
         {trackId && (
           <>
-            <View style={s.card}>
-              <View style={s.stops}>
+            <View className="mb-[14px] rounded-[14px] border border-[#262f45] bg-[#131826] p-4">
+              <View className="mb-2 flex-row justify-between">
                 {ERAS.map((e, i) => (
-                  <Pressable key={e.key} style={s.stop} onPress={() => setEraIndex(i)}>
+                  <Pressable key={e.key} className="flex-1 items-center py-1" onPress={() => setEraIndex(i)}>
                     <MaterialCommunityIcons
                       name={e.icon}
                       size={30}
                       color={i === eraIndex ? '#4fd8eb' : '#5a6478'}
                     />
-                    <Text style={[s.stopLabel, i === eraIndex && s.stopActive]}>{e.label}</Text>
-                    <Text style={s.stopSub}>{e.sub}</Text>
+                    <Text className={`mt-1 text-xs font-bold ${i === eraIndex ? 'text-[#4fd8eb]' : 'text-[#8b94a8]'}`}>{e.label}</Text>
+                    <Text className="text-[9px] text-[#5a6478]">{e.sub}</Text>
                   </Pressable>
                 ))}
               </View>
@@ -216,7 +220,7 @@ export default function App() {
                 maximumTrackTintColor="#4fd8eb"
                 thumbTintColor="#e8ecf4"
               />
-              <Text style={s.eraNote}>
+              <Text className="mt-1.5 text-center text-xs text-[#8b94a8]">
                 {eraLoading
                   ? era.key === 'modern'
                     ? 'Running DeepFilterNet on CPU…'
@@ -225,10 +229,10 @@ export default function App() {
               </Text>
             </View>
 
-            <View style={s.card}>
-              <View style={s.row}>
+            <View className="mb-[14px] rounded-[14px] border border-[#262f45] bg-[#131826] p-4">
+              <View className="flex-row items-center gap-2.5">
                 <Pressable
-                  style={s.playBtn}
+                  className="h-14 w-14 items-center justify-center rounded-full bg-[#4fd8eb]"
                   onPress={() => (status.playing ? player.pause() : player.play())}
                   disabled={eraLoading}
                 >
@@ -242,45 +246,45 @@ export default function App() {
                     />
                   )}
                 </Pressable>
-                <View style={{ flex: 1, marginLeft: 14 }}>
-                  <Text style={s.playLabel}>
+                <View className="ml-[14px] flex-1">
+                  <Text className="font-semibold text-[#e8ecf4]">
                     {status.playing ? 'Playing' : 'Paused'} — {era.label}
                   </Text>
-                  <Text style={s.playTime}>
+                  <Text className="mt-0.5 text-xs text-[#8b94a8]">
                     {fmt(status.currentTime)} / {fmt(status.duration)}
                   </Text>
                 </View>
                 {canShare && (
-                  <Pressable style={[s.btn, s.btnGhost]} onPress={shareCurrent}>
+                  <Pressable className="flex-row items-center gap-1.5 rounded-[10px] border border-[#4fd8eb] bg-transparent px-4 py-2.5" onPress={shareCurrent}>
                     <MaterialCommunityIcons name="share-variant" size={16} color="#4fd8eb" />
-                    <Text style={s.btnGhostText}> Share</Text>
+                    <Text className="font-semibold text-[#4fd8eb]"> Share</Text>
                   </Pressable>
                 )}
               </View>
             </View>
 
-            <View style={s.card}>
+            <View className="mb-[14px] rounded-[14px] border border-[#262f45] bg-[#131826] p-4">
               {analysis ? (
                 <>
-                  <Text style={s.cardHead}>ANALYSIS</Text>
-                  <View style={s.statRow}>
+                  <Text className="mb-2.5 text-[11px] tracking-[2px] text-[#8b94a8]">ANALYSIS</Text>
+                  <View className="mb-2.5 flex-row">
                     <Stat label="Tempo" value={`${analysis.tempo_bpm} bpm`} />
                     <Stat label="Energy" value={analysis.energy} />
                     <Stat label="Mood" value={analysis.mood} />
                   </View>
-                  <View style={s.statRow}>
+                  <View className="mb-2.5 flex-row">
                     <Stat label="Brightness" value={`${analysis.brightness_hz} Hz`} />
                     <Stat label="Key (rough)" value={analysis.key_guess} />
                     <Stat label="Length" value={`${analysis.duration_s}s`} />
                   </View>
-                  <Text style={s.hint}>{analysis.note}</Text>
+                  <Text className="mt-2 text-[11px] text-[#8b94a8]">{analysis.note}</Text>
                 </>
               ) : (
-                <Pressable style={[s.btn, s.btnGhost]} onPress={runAnalysis} disabled={analyzing}>
+                <Pressable className="flex-row items-center gap-1.5 self-start rounded-[10px] border border-[#4fd8eb] bg-transparent px-4 py-2.5" onPress={runAnalysis} disabled={analyzing}>
                   {analyzing ? (
                     <ActivityIndicator color="#4fd8eb" />
                   ) : (
-                    <Text style={s.btnGhostText}>Analyze tempo &amp; mood (librosa)</Text>
+                    <Text className="font-semibold text-[#4fd8eb]">Analyze tempo &amp; mood (librosa)</Text>
                   )}
                 </Pressable>
               )}
@@ -288,9 +292,9 @@ export default function App() {
           </>
         )}
 
-        {!!error && <Text style={s.error}>⚠ {error}</Text>}
+        {!!error && <Text className="mb-2.5 text-center text-[#e77]">⚠ {error}</Text>}
 
-        <Text style={s.footer}>
+        <Text className="mt-2 text-center text-[11px] leading-[17px] text-[#5a6478]">
           Past eras are physical signal modeling — no AI. The modern master is DeepFilterNet
           denoising, pretrained inference on CPU.
         </Text>
@@ -301,9 +305,9 @@ export default function App() {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <View style={s.stat}>
-      <Text style={s.statValue}>{value}</Text>
-      <Text style={s.statLabel}>{label}</Text>
+    <View className="flex-1 items-center">
+      <Text className="text-[15px] font-bold capitalize text-[#e8ecf4]">{value}</Text>
+      <Text className="mt-0.5 text-[10px] text-[#8b94a8]">{label}</Text>
     </View>
   );
 }
@@ -312,36 +316,3 @@ function fmt(sec: number | undefined) {
   const v = Math.max(0, Math.floor(sec ?? 0));
   return `${Math.floor(v / 60)}:${String(v % 60).padStart(2, '0')}`;
 }
-
-const s = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#0b0e14' },
-  scroll: { padding: 18, paddingBottom: 48, maxWidth: 560, width: '100%', alignSelf: 'center' },
-  title: { fontSize: 34, fontWeight: '800', letterSpacing: 6, textAlign: 'center', marginTop: 8 },
-  titleWave: { color: '#4fd8eb' },
-  titleBack: { color: '#f5b453' },
-  tagline: { color: '#8b94a8', textAlign: 'center', fontSize: 11, letterSpacing: 1.5, marginTop: 4, marginBottom: 16 },
-  card: { backgroundColor: '#131826', borderColor: '#262f45', borderWidth: 1, borderRadius: 14, padding: 16, marginBottom: 14 },
-  cardHead: { color: '#8b94a8', fontSize: 11, letterSpacing: 2, marginBottom: 10 },
-  row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  btn: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#4fd8eb', paddingVertical: 10, paddingHorizontal: 16, borderRadius: 10, gap: 6 },
-  btnText: { color: '#0b0e14', fontWeight: '700' },
-  btnGhost: { backgroundColor: 'transparent', borderWidth: 1, borderColor: '#4fd8eb' },
-  btnGhostText: { color: '#4fd8eb', fontWeight: '600' },
-  trackName: { color: '#4fd8eb', marginTop: 12, fontWeight: '600' },
-  hint: { color: '#8b94a8', fontSize: 11, marginTop: 8 },
-  stops: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 },
-  stop: { alignItems: 'center', flex: 1, paddingVertical: 4 },
-  stopLabel: { color: '#8b94a8', fontSize: 12, fontWeight: '700', marginTop: 4 },
-  stopActive: { color: '#4fd8eb' },
-  stopSub: { color: '#5a6478', fontSize: 9 },
-  eraNote: { color: '#8b94a8', textAlign: 'center', fontSize: 12, marginTop: 6 },
-  playBtn: { width: 56, height: 56, borderRadius: 28, backgroundColor: '#4fd8eb', alignItems: 'center', justifyContent: 'center' },
-  playLabel: { color: '#e8ecf4', fontWeight: '600' },
-  playTime: { color: '#8b94a8', fontSize: 12, marginTop: 2 },
-  statRow: { flexDirection: 'row', marginBottom: 10 },
-  stat: { flex: 1, alignItems: 'center' },
-  statValue: { color: '#e8ecf4', fontWeight: '700', fontSize: 15, textTransform: 'capitalize' },
-  statLabel: { color: '#8b94a8', fontSize: 10, marginTop: 2 },
-  error: { color: '#e77', textAlign: 'center', marginBottom: 10 },
-  footer: { color: '#5a6478', fontSize: 11, textAlign: 'center', lineHeight: 17, marginTop: 8 },
-});
