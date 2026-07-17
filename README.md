@@ -19,15 +19,31 @@ is a stretch goal, not wired in.
 
 ## Run
 
+### macOS / Linux
+
 ```sh
 python3.11 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 .venv/bin/python server.py       # http://127.0.0.1:8000
 ```
 
-First restoration run downloads DeepFilterNet3 weights to
-`~/Library/Caches/DeepFilterNet` automatically; the server preloads the model
-at startup.
+### Windows (PowerShell)
+
+```powershell
+py -3.11 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe server.py       # http://127.0.0.1:8000
+```
+
+To let the Expo app on a phone reach the API over your local network, start the
+server like this instead:
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn server:app --host 0.0.0.0 --port 8000
+```
+
+First restoration run downloads DeepFilterNet3 weights to its platform-specific
+cache directory automatically; the server preloads the model at startup.
 
 Note: `waveback_dsp._torchaudio_shim()` papers over DeepFilterNet 0.5.6
 importing `torchaudio.backend.common`, which torchaudio ≥ 2.2 removed. If
