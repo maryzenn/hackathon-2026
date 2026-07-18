@@ -5,15 +5,13 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
+import { EraChip as EraChipComponent } from './components/EraChip';
+import { RecordDisc } from './components/RecordDisc';
+import { WB, type EraId, type WavebackTheme } from './components/wavebackTheme';
 
 // ─── Brand ────────────────────────────────────────────────────────────────
-export const WB = {
-  espresso: '#1C1410', plate: '#271D15', cream: '#F5EAD0',
-  amber: '#E9A23B', burnt: '#D9652B', brick: '#C33D2E', berry: '#A93358',
-} as const;
-
-export type EraId = 'CLEAN' | 'MASTER' | 'ULTRA' | 'VINYL' | 'RADIO' | 'CASSETTE';
-export type WavebackTheme = 'espresso' | 'cream';
+export { WB } from './components/wavebackTheme';
+export type { EraId, WavebackTheme } from './components/wavebackTheme';
 
 const RIPPLE_MS = 620;
 const PROCESS_MS = 1700;
@@ -342,14 +340,14 @@ export default function WavebackScreen({
         </View>
         <View className="flex-row justify-center gap-3 px-4">
           {TIME_UP.map(e => (
-            <EraChip key={e.id} era={e} active={era === e.id} plate={T.plate} mut={T.mut} onPress={() => pick(e.id)} />
+            <EraChipComponent key={e.id} era={e} active={era === e.id} plate={T.plate} muted={T.mut} onPress={() => pick(e.id)} />
           ))}
         </View>
 
         {/* Player */}
         <View className="flex-1 items-center justify-center gap-[15px]">
-          <Disc size={300} playing={playing} processing={processing} spinSeconds={spinSeconds}
-            rippleKey={ripple} rippleDir={dir} cover={cover ?? song.cover}>
+          <RecordDisc size={300} playing={playing} processing={processing} spinSeconds={spinSeconds}
+            rippleKey={ripple} rippleDirection={dir} cover={cover ?? song.cover}>
             <Pressable
               onPress={togglePlay}
               className="absolute w-14 h-14 rounded-full items-center justify-center"
@@ -372,7 +370,7 @@ export default function WavebackScreen({
                 )}
               </Svg>
             </Pressable>
-          </Disc>
+          </RecordDisc>
 
           <View className="items-center px-[30px]">
             <Text className="font-display text-[21px]" style={{ color: T.ink }}>{song.title}</Text>
@@ -412,7 +410,7 @@ export default function WavebackScreen({
         {/* TIME DOWN */}
         <View className="flex-row justify-center gap-3 px-4 mt-3">
           {TIME_DOWN.map(e => (
-            <EraChip key={e.id} era={e} active={era === e.id} plate={T.plate} mut={T.mut} onPress={() => pick(e.id)} />
+            <EraChipComponent key={e.id} era={e} active={era === e.id} plate={T.plate} muted={T.mut} onPress={() => pick(e.id)} />
           ))}
         </View>
         <View className="flex-row items-center gap-3 mx-[30px] mt-[11px]">
